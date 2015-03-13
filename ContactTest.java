@@ -5,19 +5,28 @@ import org.junit.Test;
 
 
 public class ContactTest {
+	Contact Pete; 
+	Contact Tom;
+	Contact Mary;
 	
 	@Before
 	public void buildUp() {
-		Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
-		Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Contact Mary = new ContactImpl("Mary");
+		Pete = new ContactImpl("Pete Jones", "Marketing manager");
+		Tom = new ContactImpl("Tom Hanks", "Actor"); 
+		Mary = new ContactImpl("Mary");
 	}
 	@Test
 	public void addNotes() {
 		String input = "Head of quality management";
 		Mary.addNotes(input);
 		String output = Mary.getNotes();
-		assertEquals(input, output);		
+		assertEquals(input, output);	
+		
+		String input2 = "Based at the Head Office";
+		Pete.addNotes(input2);
+		String output2 = Pete.getNotes();
+		String expected = "Marketing manager. Based at the Head Office";
+		assertEquals(output2, expected);
 	}
 	
 	@Test
@@ -28,12 +37,13 @@ public class ContactTest {
 	}
 	
 	@Test
-	public void getID() {
-		int output = Mary.getID();
+	public void getId() {
+		int output = Mary.getId();
 		int expected = 3;
 		assertEquals(output, expected); 
 	}
 	
+	@Test
 	public void getNotes() {
 		String output = Pete.getNotes();
 		String expected = "Marketing manager"; 
