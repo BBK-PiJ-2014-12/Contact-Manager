@@ -105,23 +105,34 @@ public class ContactManagerTest {
 //	public void getFutureMeegingList(){
 //		
 //	}	
+//	@Test
+//	public void getMeeting(){
+//		cm = new ContactManagerImpl();
+//		
+//		Meeting testMeeting = cm.getMeeting(1);
+//		String output = df.format(testMeeting.getDate().getTime());
+//		String expected = "2015.June.09 10:00";
+//		
+//		assertEquals(expected, output);
+//	}	
 	@Test
-	public void getMeeting(){
+	public void getPastMeeting(){
 		cm = new ContactManagerImpl();
 		
-		Meeting testMeeting = cm.getMeeting(1);
+		Meeting testMeeting = cm.getMeeting(3);
 		String output = df.format(testMeeting.getDate().getTime());
-		String expected = "2015.June.09 10:00";
-		
+		String expected = "2014.May.22 11:30";
 		assertEquals(expected, output);
+		
+		//Meeting ID 1 is a future meeting, this test expected to fail.
+		Meeting testMeeting2 = cm.getMeeting(1);
+		String output2 = df.format(testMeeting2.getDate().getTime());
+		String expected2 = "2015.June.09 10:00";
+		assertEquals(expected2, output2);
 	}	
 //	@Test
-//	public void getPastMeeting(){
-//		
-//	}	
-//	@Test
 //	public void getPastMeetingList(){
-//		
+//
 //	}	
 //	@Test
 //	public void flush(){
