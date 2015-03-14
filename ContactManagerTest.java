@@ -15,18 +15,14 @@ public class ContactManagerTest {
 //	private List<Meeting> meetings;
 
 	SimpleDateFormat df;
-	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
-	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-	Contact Mary = new ContactImpl("Mary");
-	Contact Chris;
+//	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
+//	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
+//	Contact Mary = new ContactImpl("Mary");
+//	Contact Chris;
 	String notes;
 	ContactManagerImpl cm;
 	List<Contact> contacts2;
 	
-	@Before
-	public void buildUp() {
-		
-	}
 	
 	@Test
 	public void addNewContact() {
@@ -58,14 +54,17 @@ public class ContactManagerTest {
 	}	
 	@Test
 	public void getContats(){
-		cm.addNewContact("Tom", "MiniCab");
-		int output = cm.getContacts("Tom").size();
+		cm = new ContactManagerImpl();
+
+		cm.addNewContact("Tom Hanks", "Astronaut");
+		int output = cm.getContacts("Tom Hanks").size();
 		int expected = 2;
 		assertEquals(output, expected); 
-		
-		String output2 = cm.getContacts(2).iterator().next().getName();
-		String expected2 = "Mary";
-		assertEquals(output2, expected2); 
+
+		Set<Contact> input2 = cm.getContacts(1, 3);
+		int output2 = input2.size();
+		int expected2 = 2;
+		assertEquals(expected2, output2); 
 	}	
 	@Test
 	public void getFutureMeeting(){

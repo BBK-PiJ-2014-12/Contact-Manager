@@ -108,14 +108,22 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(int... ids) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Contact> result = new HashSet();
+		for (int i: ids) {
+			contacts.stream()
+					.filter(c -> c.getId() == i)
+					.forEach(c -> result.add(c));
+		}
+		return result;
 	}
 
 	@Override
 	public Set<Contact> getContacts(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Contact> result = new HashSet();
+		contacts.stream()
+				.filter(c -> c.getName().equals(name))
+				.forEach(c -> result.add(c));		
+		return result;
 	}
 
 	@Override
