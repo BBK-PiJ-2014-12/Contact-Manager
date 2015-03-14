@@ -58,7 +58,14 @@ public class ContactManagerTest {
 	}	
 	@Test
 	public void getContats(){
+		cm.addNewContact("Tom", "MiniCab");
+		int output = cm.getContacts("Tom").size();
+		int expected = 2;
+		assertEquals(output, expected); 
 		
+		String output2 = cm.getContacts(2).iterator().next().getName();
+		String expected2 = "Mary";
+		assertEquals(output2, expected2); 
 	}	
 	@Test
 	public void getFutureMeeting(){
