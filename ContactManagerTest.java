@@ -44,45 +44,45 @@ public class ContactManagerTest {
 //		
 //	}
 	
-	@Test
-	public void addNewPastMeeting(){
-		cm = new ContactManagerImpl();
-
-		Calendar csDate;
-		Meeting cs;
-		Set<Contact> csContacts = new HashSet<Contact>();
-		csContacts.add(Tom);
-		csContacts.add(Mary);
-		csDate = Calendar.getInstance();
-		csDate.set(2014, 5, 8, 14, 00);
-		//cs = new PastMeetingImpl(csContacts, csDate, "CS exam");
-		
-		cm.addNewPastMeeting(csContacts, csDate, "Dining philosophers");
-		int output = cm.getPastMeetings().size();
-		int expected = 2;
-		
-		assertEquals(expected, output);
-	}	
-	@Test
-	public void addFutureMeeting(){
-		cm = new ContactManagerImpl();
-		
-		Calendar dkmDate;
-		Meeting dkm;
-		Set<Contact> dkmContacts = new HashSet<Contact>();
-		dkmContacts.add(Tom);
-		dkmContacts.add(Mary);
-		dkmDate = Calendar.getInstance();
-		dkmDate.set(2015, 5, 4, 14, 30);
-		//dkm = new FutureMeetingImpl(dkmContacts, dkmDate, "DKM exam");
-		
-		cm.addFutureMeeting(dkmContacts, dkmDate);
-		
-		int output = cm.getFutureMeetings().size();
-		int expected = 3;
-		
-		assertEquals(expected, output);
-	}	
+//	@Test
+//	public void addNewPastMeeting(){
+//		cm = new ContactManagerImpl();
+//
+//		Calendar csDate;
+//		Meeting cs;
+//		Set<Contact> csContacts = new HashSet<Contact>();
+//		csContacts.add(Tom);
+//		csContacts.add(Mary);
+//		csDate = Calendar.getInstance();
+//		csDate.set(2014, 5, 8, 14, 00);
+//		//cs = new PastMeetingImpl(csContacts, csDate, "CS exam");
+//		
+//		cm.addNewPastMeeting(csContacts, csDate, "Dining philosophers");
+//		int output = cm.getPastMeetings().size();
+//		int expected = 2;
+//		
+//		assertEquals(expected, output);
+//	}	
+//	@Test
+//	public void addFutureMeeting(){
+//		cm = new ContactManagerImpl();
+//		
+//		Calendar dkmDate;
+//		Meeting dkm;
+//		Set<Contact> dkmContacts = new HashSet<Contact>();
+//		dkmContacts.add(Tom);
+//		dkmContacts.add(Mary);
+//		dkmDate = Calendar.getInstance();
+//		dkmDate.set(2015, 5, 4, 14, 30);
+//		//dkm = new FutureMeetingImpl(dkmContacts, dkmDate, "DKM exam");
+//		
+//		cm.addFutureMeeting(dkmContacts, dkmDate);
+//		
+//		int output = cm.getFutureMeetings().size();
+//		int expected = 3;
+//		
+//		assertEquals(expected, output);
+//	}	
 //	@Test
 //	public void getContats(){
 //		cm = new ContactManagerImpl();
@@ -105,10 +105,16 @@ public class ContactManagerTest {
 //	public void getFutureMeegingList(){
 //		
 //	}	
-//	@Test
-//	public void getMeeting(){
-//		
-//	}	
+	@Test
+	public void getMeeting(){
+		cm = new ContactManagerImpl();
+		
+		Meeting testMeeting = cm.getMeeting(1);
+		String output = df.format(testMeeting.getDate().getTime().toString());
+		String expected = "2015.June.09 10:00";
+		
+		assertEquals(expected, output);
+	}	
 //	@Test
 //	public void getPastMeeting(){
 //		
