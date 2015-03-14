@@ -11,47 +11,20 @@ import java.util.List;
 import java.util.Set;
 
 public class ContactManagerTest {
-	private List<Contact> contacts;
-	private List<Meeting> meetings;
-	Calendar pijDate;
-	Calendar sdpDate;
+//	private List<Contact> contacts;
+//	private List<Meeting> meetings;
+
 	SimpleDateFormat df;
-	Contact Pete;
-	Contact Tom;
-	Contact Mary;
-	Set<Contact> pijContacts = new HashSet<Contact>();
-	Set<Contact> sdpContacts = new HashSet<Contact>();
+	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
+	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
+	Contact Mary = new ContactImpl("Mary");
+	Contact Chris;
 	String notes;
-	Meeting pij;
-	Meeting sdp;
-	ContactManager cm;
+	ContactManagerImpl cm;
+	List<Contact> contacts2;
 	
 	@Before
 	public void buildUp() {
-		//Creating new Contacts
-		Pete = new ContactImpl("Pete Jones", "Marketing manager");
-		Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Mary = new ContactImpl("Mary");
-		contacts = new ArrayList();
-		contacts.add(Pete);
-		contacts.add(Tom);
-		contacts.add(Mary);
-		
-		//Creating new Meetings
-		pijContacts.add(Pete);
-		pijContacts.add(Mary);
-		pijDate = Calendar.getInstance();
-		pijDate.set(2015, 5, 9, 10, 00);
-		pij = new MeetingImpl(pijContacts, pijDate, "PiJ exam");
-		
-		sdpContacts.add(Tom);
-		sdpContacts.add(Mary);
-		sdpDate = Calendar.getInstance();
-		sdpDate.set(2015, 4, 26, 14, 30);
-		sdp = new MeetingImpl(sdpContacts, sdpDate, "SDP exam");
-		
-		//Misc
-		df = new SimpleDateFormat("yyyy.MMMMM.dd HH:mm");
 		
 	}
 	
@@ -59,13 +32,15 @@ public class ContactManagerTest {
 	public void addNewContact() {
 		cm = new ContactManagerImpl();
 		cm.addNewContact("Chris", "Supervisor");
-		Contact Chris = new ContactImpl("Chris", "Supervisor");
-		List<Contact> contacts2 = new ArrayList(); 
+		Chris = new ContactImpl("Chris", "Supervisor");
+		contacts2 = new ArrayList(); 
 		contacts2.add(Pete);
 		contacts2.add(Tom);
 		contacts2.add(Mary);
 		contacts2.add(Chris);
-		assertEquals(contacts, contacts2);
+		String output = cm.getCMContacts().get(3).getName().toString();
+		String expected = "Chris";
+		assertEquals(output, expected);
 	}
 	
 	@Test
