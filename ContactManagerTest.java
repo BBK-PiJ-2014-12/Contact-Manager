@@ -14,7 +14,7 @@ public class ContactManagerTest {
 	List<Contact> contacts;
 	List<Meeting> meetings;
 
-	SimpleDateFormat df;
+	SimpleDateFormat df = new SimpleDateFormat("yyyy.MMMMM.dd HH:mm");
 	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
 	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
 	Contact Mary = new ContactImpl("Mary");
@@ -110,7 +110,7 @@ public class ContactManagerTest {
 		cm = new ContactManagerImpl();
 		
 		Meeting testMeeting = cm.getMeeting(1);
-		String output = df.format(testMeeting.getDate().getTime().toString());
+		String output = df.format(testMeeting.getDate().getTime());
 		String expected = "2015.June.09 10:00";
 		
 		assertEquals(expected, output);

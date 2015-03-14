@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -58,7 +59,7 @@ public class ContactManagerImpl implements ContactManager {
 		meetings.add(pij);
 		meetings.add(sdp);
 		meetings.add(foc);
-		
+
 		//Misc
 		SimpleDateFormat df;
 		df = new SimpleDateFormat("yyyy.MMMMM.dd HH:mm");
@@ -85,8 +86,15 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Meeting getMeeting(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> resultList = new ArrayList();
+		meetings.stream()
+				.filter(m -> m.getId() == id)
+				.forEach(m -> resultList.add(m));
+		
+		if(resultList.size() > 1) {
+			throw new IllegalStateException();
+		}
+		return resultList.get(0);
 	}
 
 	@Override
