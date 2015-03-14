@@ -15,10 +15,10 @@ public class ContactManagerTest {
 //	private List<Meeting> meetings;
 
 	SimpleDateFormat df;
-//	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
-//	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-//	Contact Mary = new ContactImpl("Mary");
-//	Contact Chris;
+	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
+	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
+	Contact Mary = new ContactImpl("Mary");
+	Contact Chris;
 	String notes;
 	ContactManagerImpl cm;
 	List<Contact> contacts2;
@@ -46,11 +46,42 @@ public class ContactManagerTest {
 	
 	@Test
 	public void addPastMeeting(){
+		cm = new ContactManagerImpl();
+
+		Calendar csDate;
+		Meeting cs;
+		Set<Contact> csContacts = new HashSet<Contact>();
+		csContacts.add(Tom);
+		csContacts.add(Mary);
+		csDate = Calendar.getInstance();
+		csDate.set(2014, 5, 8, 14, 00);
+		cs = new PastMeetingImpl(csContacts, csDate, "CS exam");
 		
+		cm.addNewPastMeeting(csContacts, csDate, "");
+		int output = cm.getPastMeetings().size();
+		int expected = 2;
+		
+		assertEquals(expected, output);
 	}	
 	@Test
 	public void addFutureMeeting(){
+		cm = new ContactManagerImpl();
 		
+		Calendar dkmDate;
+		Meeting dkm;
+		Set<Contact> dkmContacts = new HashSet<Contact>();
+		dkmContacts.add(Tom);
+		dkmContacts.add(Mary);
+		dkmDate = Calendar.getInstance();
+		dkmDate.set(2015, 5, 4, 14, 30);
+		dkm = new FutureMeetingImpl(dkmContacts, dkmDate, "DKM exam");
+		
+		cm.addFutureMeeting(dkmContacts, dkmDate);
+		
+		int output = cm.getFutureMeetings().size();
+		int expected = 3;
+		
+		assertEquals(expected, output);
 	}	
 	@Test
 	public void getContats(){
