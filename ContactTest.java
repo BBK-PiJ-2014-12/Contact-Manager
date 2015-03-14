@@ -20,13 +20,14 @@ public class ContactTest {
 		String input = "Head of quality management";
 		Mary.addNotes(input);
 		String output = Mary.getNotes();
-		assertEquals(input, output);	
+		String expected = "Head of quality management. ";
+		assertEquals(output, expected);	
 		
 		String input2 = "Based at the Head Office";
 		Pete.addNotes(input2);
 		String output2 = Pete.getNotes();
-		String expected = "Marketing manager. Based at the Head Office";
-		assertEquals(output2, expected);
+		String expected2 = "Marketing manager. Based at the Head Office. ";
+		assertEquals(output2, expected2);
 	}
 	
 	@Test
@@ -36,6 +37,7 @@ public class ContactTest {
 		assertEquals(output, expected);
 	}
 	
+	//Passed testing when the other tests are commented out and only the correct number or objects are created. 
 	@Test
 	public void getId() {
 		int output = Mary.getId();
@@ -46,7 +48,7 @@ public class ContactTest {
 	@Test
 	public void getNotes() {
 		String output = Pete.getNotes();
-		String expected = "Marketing manager"; 
+		String expected = "Marketing manager. "; 
 		assertEquals(output, expected);
 	}
 }

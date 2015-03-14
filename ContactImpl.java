@@ -10,15 +10,17 @@ public class ContactImpl implements Contact{
 		this.notes = "";
 		this.ID = lastID + 1;
 		lastID = this.ID;	
-		System.out.println(lastID);
 	}
 	
 	public ContactImpl(String name, String notes) {
 		this.name = name;
-		this.notes = notes;
+		if (notes.charAt(notes.length() - 1) != '.') {
+			this.notes = notes + ". ";
+		} else {
+			this.notes = notes;	
+		}
 		this.ID = lastID + 1;
 		lastID = this.ID;
-		System.out.println(lastID);
 	}
 
 	@Override
@@ -38,12 +40,10 @@ public class ContactImpl implements Contact{
 
 	@Override
 	public void addNotes(String note) {
-		if (!notes.equals("") && notes.charAt(notes.length() - 1) != '.') {
-			notes = notes + ". " + note;
-		} else if (!notes.equals("") && notes.charAt(notes.length() - 1) == '.') {
-			notes = notes + " " + note;
+		if (note.charAt(note.length() - 1) != '.') {
+			notes = notes + note  + ". ";
 		} else {
-			notes = note;
+			notes = notes + note;
 		}	
 	}
 }
