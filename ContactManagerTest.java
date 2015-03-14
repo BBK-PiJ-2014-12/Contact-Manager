@@ -99,12 +99,29 @@ public class ContactManagerTest {
 //	}	
 //	@Test
 //	public void getFutureMeeting(){
+//		cm = new ContactManagerImpl();
+//	
+//		//Meeting ID 1 is a future meeting, this test expected to fail.
+//		FutureMeeting testMeeting = cm.getFutureMeeting(3);
+//		String output = df.format(testMeeting.getDate().getTime());
+//		String expected = "2014.May.22 11:30";
+//		assertEquals(expected, output);
 //		
+//		FutureMeeting testMeeting2 = cm.getFutureMeeting(1);
+//		String output2 = df.format(testMeeting2.getDate().getTime());
+//		String expected2 = "2015.June.09 10:00";
+//		assertEquals(expected2, output2);
 //	}	
-//	@Test
-//	public void getFutureMeegingList(){
-//		
-//	}	
+	@Test
+	public void getFutureMeegingList(){
+		cm = new ContactManagerImpl();
+		
+		List<Meeting> futureMeetings;
+		futureMeetings = cm.getFutureMeetingList(Mary);
+		String output = df.format(futureMeetings.get(1).getDate());
+		String expected = "2015.May.26 14:30";
+		assertEquals(expected, output);
+	}	
 //	@Test
 //	public void getMeeting(){
 //		cm = new ContactManagerImpl();
@@ -115,25 +132,31 @@ public class ContactManagerTest {
 //		
 //		assertEquals(expected, output);
 //	}	
+//	@Test
+//	public void getPastMeeting(){
+//		cm = new ContactManagerImpl();
+//		
+//		PastMeeting testMeeting = cm.getPastMeeting(3);
+//		String output = df.format(testMeeting.getDate().getTime());
+//		String expected = "2014.May.22 11:30";
+//		assertEquals(expected, output);
+//		
+//		//Meeting ID 1 is a future meeting, this test expected to fail.
+//		PastMeeting testMeeting2 = cm.getPastMeeting(1);
+//		String output2 = df.format(testMeeting2.getDate().getTime());
+//		String expected2 = "2015.June.09 10:00";
+//		assertEquals(expected2, output2);
+//	}	
 	@Test
-	public void getPastMeeting(){
+	public void getPastMeetingList(){
 		cm = new ContactManagerImpl();
-		
-		Meeting testMeeting = cm.getMeeting(3);
-		String output = df.format(testMeeting.getDate().getTime());
+	
+		List<Meeting> futureMeetings;
+		futureMeetings = cm.getFutureMeetingList(Tom);
+		String output = df.format(futureMeetings.get(1).getDate());
 		String expected = "2014.May.22 11:30";
 		assertEquals(expected, output);
-		
-		//Meeting ID 1 is a future meeting, this test expected to fail.
-		Meeting testMeeting2 = cm.getMeeting(1);
-		String output2 = df.format(testMeeting2.getDate().getTime());
-		String expected2 = "2015.June.09 10:00";
-		assertEquals(expected2, output2);
 	}	
-//	@Test
-//	public void getPastMeetingList(){
-//
-//	}	
 //	@Test
 //	public void flush(){
 //		
