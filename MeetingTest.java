@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -11,10 +12,10 @@ import org.junit.Test;
 public class MeetingTest {
 	Calendar date;
 	SimpleDateFormat df;
-	Contact Pete; 
+	Contact Pete;
 	Contact Tom;
 	Contact Mary;
-	Set<Contact> contacts;
+	Set<Contact> contacts = new HashSet<Contact>();;
 	String notes;
 	Meeting m1;
 	
@@ -29,7 +30,7 @@ public class MeetingTest {
 		
 		df = new SimpleDateFormat("yyyy.MMMMM.dd HH:mm");
 		date = Calendar.getInstance();
-		date.set(2015, 06, 9, 10, 00);
+		date.set(2015, 5, 9, 10, 00);
 		
 		notes = "PiJ exam";
 		
@@ -43,6 +44,7 @@ public class MeetingTest {
 		assertEquals(output, expected);
 	}
 	
+	//Passed testing when the other tests are commented out and only the correct number or objects were created.
 	@Test
 	public void getId() {
 		int output = m1.getId();
