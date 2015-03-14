@@ -2,6 +2,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -74,14 +75,28 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public PastMeeting getPastMeeting(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> resultList = new ArrayList();
+		getPastMeetings().stream()
+						 .filter(m -> m.getId() == id)
+						 .forEach(m -> resultList.add(m));
+
+		if(resultList.size() > 1) {
+			throw new IllegalStateException();
+		}
+		return (PastMeeting) resultList.get(0);
 	}
 
 	@Override
 	public FutureMeeting getFutureMeeting(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> resultList = new ArrayList();
+		getFutureMeetings().stream()
+						   .filter(m -> m.getId() == id)
+						   .forEach(m -> resultList.add(m));
+
+		if(resultList.size() > 1) {
+			throw new IllegalStateException();
+		}
+		return (FutureMeeting) resultList.get(0);
 	}
 
 	@Override
@@ -99,8 +114,15 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> result = new ArrayList();
+		for(Meeting m: getFutureMeetings()) {
+			for(Contact c: m.getContacts()) {
+				if(c.getId() == contact.getId()) {
+					result.add(m);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -111,8 +133,15 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		List<PastMeeting> result = new ArrayList();
+		for(Meeting m: getPastMeetings()) {
+			for(Contact c: m.getContacts()) {
+				if(c.getId() == contact.getId()) {
+					result.add((PastMeeting) m);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override

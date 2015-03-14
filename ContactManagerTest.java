@@ -112,16 +112,16 @@ public class ContactManagerTest {
 //		String expected2 = "2015.June.09 10:00";
 //		assertEquals(expected2, output2);
 //	}	
-	@Test
-	public void getFutureMeegingList(){
-		cm = new ContactManagerImpl();
-		
-		List<Meeting> futureMeetings;
-		futureMeetings = cm.getFutureMeetingList(Mary);
-		String output = df.format(futureMeetings.get(1).getDate());
-		String expected = "2015.May.26 14:30";
-		assertEquals(expected, output);
-	}	
+		@Test
+		public void getFutureMeegingList(){
+			cm = new ContactManagerImpl();
+	
+			List<Meeting> futureMeetings;
+			futureMeetings = cm.getFutureMeetingList(cm.getContacts("Mary").iterator().next());
+			String output = df.format(futureMeetings.get(1).getDate().getTime());
+			String expected = "2015.May.26 14:30";
+			assertEquals(expected, output);
+		}	
 //	@Test
 //	public void getMeeting(){
 //		cm = new ContactManagerImpl();
@@ -150,10 +150,10 @@ public class ContactManagerTest {
 	@Test
 	public void getPastMeetingList(){
 		cm = new ContactManagerImpl();
-	
-		List<Meeting> futureMeetings;
-		futureMeetings = cm.getFutureMeetingList(Tom);
-		String output = df.format(futureMeetings.get(1).getDate());
+
+		List<PastMeeting> pastMeetings;
+		pastMeetings = cm.getPastMeetingList(cm.getContacts("Tom Hanks").iterator().next());
+		String output = df.format(pastMeetings.get(0).getDate().getTime());
 		String expected = "2014.May.22 11:30";
 		assertEquals(expected, output);
 	}	
