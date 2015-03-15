@@ -127,8 +127,15 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public List<Meeting> getFutureMeetingList(Calendar date) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> result = new ArrayList();
+		for(Meeting m: getFutureMeetings()) {
+			m.getDate();
+			m.getDate();
+			if(m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)){
+				result.add(m);
+			}
+		}
+		return result;
 	}
 
 	@Override
