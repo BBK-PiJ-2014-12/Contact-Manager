@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Timer;
 
 
 public class ContactManagerImpl implements ContactManager {
@@ -13,12 +14,19 @@ public class ContactManagerImpl implements ContactManager {
 //	private List<Meeting> futureMeetings;
 //	private List<Meeting> pastMeetings;
 	private List<Meeting> meetings;
+	private Timer timer;
+	private Scheduler scheduler;
+	private final int DELAY = 0;
+	private final int PERIOD = 1000;
 	
 	public ContactManagerImpl() {
 		contacts = new ArrayList();
 //		futureMeetings = new ArrayList();
 //		pastMeetings = new ArrayList();
 		meetings = new ArrayList();
+		scheduler = new Scheduler(this);
+		timer = new Timer();
+		timer.schedule(scheduler, DELAY, PERIOD);
 		
 		//Creating new Contacts
 		Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
@@ -30,32 +38,32 @@ public class ContactManagerImpl implements ContactManager {
 		contacts.add(Mary);
 		
 		//Creating new Meetings
-		Calendar pijDate;
+		Calendar pijDate;	//id = 1
 		Meeting pij;
 		Set<Contact> pijContacts = new HashSet<Contact>();
 		pijContacts.add(Pete);
 		pijContacts.add(Mary);
 		pijDate = Calendar.getInstance();
 		pijDate.set(2015, 5, 9, 10, 00);
-		pij = new FutureMeetingImpl(pijContacts, pijDate, "PiJ exam");
+		pij = new FutureMeetingImpl(pijContacts, pijDate);
 
-		Calendar sdpDate;
+		Calendar sdpDate;	//id = 2
 		Meeting sdp;
 		Set<Contact> sdpContacts = new HashSet<Contact>();
 		sdpContacts.add(Tom);
 		sdpContacts.add(Mary);
 		sdpDate = Calendar.getInstance();
 		sdpDate.set(2015, 4, 26, 14, 30);
-		sdp = new FutureMeetingImpl(sdpContacts, sdpDate, "SDP exam");
+		sdp = new FutureMeetingImpl(sdpContacts, sdpDate);
 		
-		Calendar focDate;
+		Calendar focDate;	//id = 3
 		Meeting foc;
 		Set<Contact> focContacts = new HashSet<Contact>();
 		focContacts.add(Tom);
 		focContacts.add(new ContactImpl("Mark", "examiner")	);
 		focDate = Calendar.getInstance();
 		focDate.set(2014, 4, 22, 11, 30);
-		foc = new PastMeetingImpl(focContacts, focDate);
+		foc = new PastMeetingImpl(focContacts, focDate, "FoC exam");
 		
 		meetings.add(pij);
 		meetings.add(sdp);
@@ -153,14 +161,14 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
-		Meeting addMeeting = new PastMeetingImpl(contacts, date);
+		Meeting addMeeting = new PastMeetingImpl(contacts, date, text);
 		meetings.add(addMeeting);
 	}
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
-		// TODO Auto-generated method stub
-		
+		PastMeetingImpl pm = (PastMeetingImpl) getPastMeeting(id);
+		pm.setNotes(text);
 	}
 
 	@Override
@@ -194,14 +202,27 @@ public class ContactManagerImpl implements ContactManager {
 		
 	}
 	
+	/**
+	 * Returns all contacts.
+	 * @return List of contacts. 
+	 */
 	public List<Contact> getCMContacts() {
 		return contacts;
 	}
 	
+	/**
+	 * Returns all meetings.
+	 * @return List of meetings.
+	 */
 	public List<Meeting> getMeetings() {
 		return meetings;
 	}
 	
+	/**
+	 * Returns a list of past meetings.
+	 * 
+	 * @return List of past meetings. 
+	 */
 	public List<Meeting> getPastMeetings() {
 		List<Meeting> result = new ArrayList();
 		meetings.stream()
@@ -210,11 +231,68 @@ public class ContactManagerImpl implements ContactManager {
 		return result;
 	}
 	
+	/**
+	 * Returns a list of future meetings.
+	 * 
+	 * @return List of future meetings. 
+	 */
 	public List<Meeting> getFutureMeetings() {
 		List<Meeting> result = new ArrayList();
 		meetings.stream()
 				.filter(c -> c.getClass().getName().equals("FutureMeetingImpl"))
 				.forEach(c -> result.add(c));
 		return result;
+	}
+	
+	/**
+	 * Stops the timer running. 
+	 */
+	public void shutOffTimer() {
+		timer.cancel();
+	}
+	
+	/**
+	 * The timer calls this method according to a preset interval in order to convert future meeting 
+	 * to past meetings in case the meeting has already taken place. 
+	 */
+	public void revaluateMeetings() {
+		Calendar now = Calendar.getInstance();
+		List<Meeting> convert = new ArrayList();
+		getFutureMeetings().stream()
+						   .filter(m -> m.getDate().getTime().getTime() < now.getTime().getTime())
+						   .forEach(m -> convert.add(m));
+		
+		for(Meeting m: convert) {
+			convertMeeting(m);
+		}
+	}
+	
+	/**
+	 * Converts a future meeting into a past meeting by locating the future meeting in the meetings list and 
+	 * replacing it with a new past meeting with the same parameters as the future meeting. 
+	 * 
+	 * @param m the future meeting to be converted into a past meeting. 
+	 */
+	public void convertMeeting(Meeting m) {
+		int i = 0;
+		Meeting pastTemp;
+		Meeting futureTemp;
+		while(meetings.get(i).getId() != m.getId() && i < meetings.size()) {
+			futureTemp = meetings.get(i);
+			pastTemp = new PastMeetingImpl(futureTemp.getContacts(), futureTemp.getDate(), futureTemp.getId());
+			meetings.set(i, pastTemp);
+			i++;
+		}
+	}
+	
+	/**
+	 * The method is to be used to convert future meetings into past meetings. 
+	 * 
+	 * @param m the future meeting to be converted into a past meeting.
+	 * @param notes to be added to the meeting. 
+	 */
+	public void manualMeetingConversion(Meeting m, String notes) {
+		convertMeeting(m);
+		addMeetingNotes(m.getId(), notes);
 	}
 }
