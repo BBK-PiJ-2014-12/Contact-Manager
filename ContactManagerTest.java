@@ -38,11 +38,17 @@ public class ContactManagerTest {
 //		String expected = "Chris";
 //		assertEquals(output, expected);
 //	}
-//	
-//	@Test
-//	public void addMeetingNotes(){
-//		
-//	}
+	
+	@Test
+	public void addMeetingNotes(){
+		cm = new ContactManagerImpl(); 
+		
+		cm.addMeetingNotes(3, "This one went well");
+		PastMeetingImpl pm = (PastMeetingImpl) cm.getMeeting(3);
+		String output = pm.getNotes();
+		String expected = "FoC exam. This one went well.";
+		assertEquals(expected, output);
+	}
 	
 //	@Test
 //	public void addNewPastMeeting(){
@@ -112,24 +118,24 @@ public class ContactManagerTest {
 //		String expected2 = "2015.June.09 10:00";
 //		assertEquals(expected2, output2);
 //	}	
-		@Test
-		public void getFutureMeegingList(){
-			cm = new ContactManagerImpl();
-	
+//		@Test
+//		public void getFutureMeegingList(){
+//			cm = new ContactManagerImpl();
+//	
 //			List<Meeting> futureMeetings;
 //			futureMeetings = cm.getFutureMeetingList(cm.getContacts("Mary").iterator().next());
 //			String output = df.format(futureMeetings.get(1).getDate().getTime());
 //			String expected = "2015.May.26 14:30";
 //			assertEquals(expected, output);
 //			
-			List<Meeting> futureMeetings2;
-			Calendar testDate = Calendar.getInstance(); 
-			testDate.set(2015, 4, 26);
-			futureMeetings2 = cm.getFutureMeetingList(testDate);
-			int output2 = futureMeetings2.get(0).getId();
-			int expected2 = 2;
-			assertEquals(expected2, output2);
-		}	
+//			List<Meeting> futureMeetings2;
+//			Calendar testDate = Calendar.getInstance(); 
+//			testDate.set(2015, 4, 26);
+//			futureMeetings2 = cm.getFutureMeetingList(testDate);
+//			int output2 = futureMeetings2.get(0).getId();
+//			int expected2 = 2;
+//			assertEquals(expected2, output2);
+//		}	
 //	@Test
 //	public void getMeeting(){
 //		cm = new ContactManagerImpl();
