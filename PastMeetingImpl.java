@@ -7,11 +7,16 @@ public class PastMeetingImpl extends MeetingAbstract implements PastMeeting{
 
 	public PastMeetingImpl(Set<Contact> contacts, Calendar date, String notes) {
 		super(contacts, date);
+		setNotes(notes);
+	}
+	
+	public PastMeetingImpl(int id, Set<Contact> contacts, Calendar date, String notes) {
+		super(id, contacts, date);
 		setNotes(notes);	
 	}
 	
-	public PastMeetingImpl(Set<Contact> contacts, Calendar date, int id) {
-		super(contacts, date, id);
+	public PastMeetingImpl(int id, Set<Contact> contacts, Calendar date) {
+		super(id, contacts, date);
 	}
 	
 	@Override
@@ -20,7 +25,7 @@ public class PastMeetingImpl extends MeetingAbstract implements PastMeeting{
 	}
 	
 	public void setNotes(String note) {
-		if (note.charAt(note.length() - 1) != '.') {
+		if ((!note.equals("")) && note.trim().charAt(note.length() - 1) != '.') {
 			this.notes = (notes + " " + note  + ".").trim();
 		} else {
 			this.notes = (notes + " " + note).trim();

@@ -6,27 +6,20 @@ public abstract class MeetingAbstract implements Meeting{
 	private static int lastID;
 	private int ID;
 	private Calendar date;
-	private String notes;
 	private Set<Contact> contacts;
 	
 	public MeetingAbstract(Set<Contact> contacts, Calendar date) {
 		this.contacts = contacts; 
 		this.date = date;
-		this.notes = "";
 		this.ID = lastID + 1;
 		lastID = this.ID;
 	}
 	
-	public MeetingAbstract(Set<Contact> contacts, Calendar date, String notes) {
+	public MeetingAbstract(int id, Set<Contact> contacts, Calendar date) {
 		this.contacts = contacts; 
 		this.date = date;
-		if (notes.charAt(notes.length() - 1) != '.') {
-			this.notes = notes + ". ";
-		} else {
-			this.notes = notes;	
-		}
-		this.ID = lastID + 1;
-		lastID = this.ID;
+		this.ID = id;
+		lastID++;
 	}
 	
 	@Override
@@ -40,9 +33,5 @@ public abstract class MeetingAbstract implements Meeting{
 	@Override
 	public Set<Contact> getContacts() {
 		return contacts;
-	}
-	
-	public String getNotes() {
-		return notes;
 	}
 }

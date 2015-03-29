@@ -13,7 +13,7 @@ public class ContactTest {
 	public void buildUp() {
 		Pete = new ContactImpl("Pete Jones", "Marketing manager");
 		Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Mary = new ContactImpl("Mary");
+		Mary = new ContactImpl("Mary", "Director");
 	}
 	@Test
 	public void addNotes() {
@@ -37,7 +37,7 @@ public class ContactTest {
 		assertEquals(output, expected);
 	}
 	
-	//Passed testing when the other tests are commented out and only the correct number or objects are created. 
+	//Passed testing when the other tests are commented out and only the correct number or objects were created. 
 	@Test
 	public void getId() {
 		int output = Mary.getId();

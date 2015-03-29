@@ -17,7 +17,7 @@ public class ContactManagerTest {
 	SimpleDateFormat df = new SimpleDateFormat("yyyy.MMMMM.dd HH:mm");
 	Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
 	Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-	Contact Mary = new ContactImpl("Mary");
+	Contact Mary = new ContactImpl("Mary", "Director");
 	Contact Chris;
 	String notes;
 	ContactManagerImpl cm;
@@ -38,18 +38,25 @@ public class ContactManagerTest {
 //		String expected = "Chris";
 //		assertEquals(output, expected);
 //	}
-	
+//	
 	@Test
 	public void addMeetingNotes(){
+
 		cm = new ContactManagerImpl(); 
-		
 		cm.addMeetingNotes(3, "This one went well");
 		PastMeetingImpl pm = (PastMeetingImpl) cm.getMeeting(3);
 		String output = pm.getNotes();
 		String expected = "FoC exam. This one went well.";
 		assertEquals(expected, output);
+		
+		//This is testing for Illegal State Exception with a future meeting
+		cm.addMeetingNotes(2, "This one went well");
+		PastMeetingImpl pm2 = (PastMeetingImpl) cm.getMeeting(3);
+		String output2 = pm.getNotes();
+		String expected2 = "FoC exam. This one went well.";
+		assertEquals(expected2, output2);
 	}
-	
+//	
 //	@Test
 //	public void addNewPastMeeting(){
 //		cm = new ContactManagerImpl();
@@ -98,7 +105,7 @@ public class ContactManagerTest {
 //		int expected = 2;
 //		assertEquals(output, expected); 
 //
-//		Set<Contact> input2 = cm.getContacts(1, 3);
+//		Set<Contact> input2 = cm.getContacts("Tom Hanks");
 //		int output2 = input2.size();
 //		int expected2 = 2;
 //		assertEquals(expected2, output2); 

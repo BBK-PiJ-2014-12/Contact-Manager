@@ -5,20 +5,18 @@ public class ContactImpl implements Contact{
 	private String name;
 	private String notes;
 	
-	public ContactImpl(String name) {
+	public ContactImpl(int id, String name, String notes) {
 		this.name = name;
 		this.notes = "";
-		this.ID = lastID + 1;
-		lastID = this.ID;	
+		addNotes(notes);
+		this.ID = id;
+		lastID++;	
 	}
 	
 	public ContactImpl(String name, String notes) {
 		this.name = name;
-		if (notes.charAt(notes.length() - 1) != '.') {
-			this.notes = notes + ". ";
-		} else {
-			this.notes = notes;	
-		}
+		this.notes = "";
+		addNotes(notes);
 		this.ID = lastID + 1;
 		lastID = this.ID;
 	}
@@ -40,10 +38,14 @@ public class ContactImpl implements Contact{
 
 	@Override
 	public void addNotes(String note) {
-		if (note.charAt(note.length() - 1) != '.') {
-			notes = notes + note  + ". ";
+		if ((!note.equals("")) && note.trim().charAt(note.length() - 1) != '.') {
+			notes = (notes + " " + note  + ".").trim();
 		} else {
-			notes = notes + note;
+			notes = (notes + " " + note).trim();
 		}	
+	}
+	
+	public String toString() {
+		return "ID " + ID + " | Name: " + name + " | Notes: " + notes;
 	}
 }

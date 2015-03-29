@@ -11,7 +11,7 @@ public class PastMeetingTest {
 	public void test() {
 		Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
 		Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Contact Mary = new ContactImpl("Mary");
+		Contact Mary = new ContactImpl("Mary", "Director");
 		
 		Calendar focDate;	//id = 3
 		PastMeeting foc;

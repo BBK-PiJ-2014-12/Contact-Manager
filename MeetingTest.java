@@ -23,7 +23,7 @@ public class MeetingTest {
 	public void buildUp() {
 		Pete = new ContactImpl("Pete Jones", "Marketing manager");
 		Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Mary = new ContactImpl("Mary");
+		Mary = new ContactImpl("Mary", "Director");
 		contacts.add(Pete);
 		contacts.add(Tom);
 		contacts.add(Mary);
@@ -34,7 +34,7 @@ public class MeetingTest {
 		
 		notes = "PiJ exam";
 		
-		m1 = new MeetingImpl(contacts, date, notes);
+		m1 = new PastMeetingImpl(contacts, date, notes);
 	}
 	
 	@Test

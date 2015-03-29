@@ -1,37 +1,51 @@
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.Timer;
 
 
 public class ContactManagerImpl implements ContactManager {
 	private List<Contact> contacts;
-//	private List<Meeting> futureMeetings;
-//	private List<Meeting> pastMeetings;
 	private List<Meeting> meetings;
 	private Timer timer;
 	private Scheduler scheduler;
 	private final int DELAY = 0;
 	private final int PERIOD = 1000;
+	private TextProcessor textProcessor;
+	private TextBuilder textBuilder;
 	
 	public ContactManagerImpl() {
 		contacts = new ArrayList();
-//		futureMeetings = new ArrayList();
-//		pastMeetings = new ArrayList();
 		meetings = new ArrayList();
-		scheduler = new Scheduler(this);
-		timer = new Timer();
-		timer.schedule(scheduler, DELAY, PERIOD);
+//		scheduler = new Scheduler(this);
+//		timer = new Timer();
+//		timer.schedule(scheduler, DELAY, PERIOD);
+//		textProcessor = new TextProcessor(this);
+//		textBuilder = new TextBuilder();
+//		
+//		try {
+//			textProcessor.recoverData();
+//		} catch (IOException e) {
+//			System.out.println("The application failed to recover data!");
+//			e.printStackTrace();
+//		}
+//		
+//		contacts = textProcessor.createContacts();
+//		for(Contact c: contacts) {
+//			System.out.println(">>> " + c.toString());
+//		}
+//		System.out.println("Contacts processed");
+//		meetings = textProcessor.createMeeting();
+//		System.out.println("Meetings processed");
 		
 		//Creating new Contacts
 		Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
 		Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Contact Mary = new ContactImpl("Mary");
+		Contact Mary = new ContactImpl("Mary", "");
 		
 		contacts.add(Pete);
 		contacts.add(Tom);
@@ -76,32 +90,57 @@ public class ContactManagerImpl implements ContactManager {
 	
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		Meeting addMeeting = new FutureMeetingImpl(contacts, date);
-		meetings.add(addMeeting);
-		return addMeeting.getId();
+		Calendar now = Calendar.getInstance();
+		if(date.before(now) || !contactsExist(contacts)) {
+			throw new IllegalArgumentException();
+		} else {
+			Meeting addMeeting = new FutureMeetingImpl(contacts, date);
+			meetings.add(addMeeting);
+			return addMeeting.getId();
+		}
+	}
+	
+	/**
+	 * Checks if all the contact in a set of contacts exists. 
+	 * 
+	 * @param participants, the contacts who are checked if they a part of our contact list.
+	 * @return true or false
+	 */
+	private boolean contactsExist(Set<Contact> participants) {
+		for(Contact p: participants) {
+			if(!contacts.contains(p)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public PastMeeting getPastMeeting(int id) {
+		Calendar now = Calendar.getInstance();
+
 		List<Meeting> resultList = new ArrayList();
 		getPastMeetings().stream()
 						 .filter(m -> m.getId() == id)
 						 .forEach(m -> resultList.add(m));
 
-		if(resultList.size() > 1) {
+		if(resultList.size() > 1 || resultList.get(0).getDate().after(now)) {
 			throw new IllegalStateException();
 		}
+		
 		return (PastMeeting) resultList.get(0);
 	}
 
 	@Override
 	public FutureMeeting getFutureMeeting(int id) {
+		Calendar now = Calendar.getInstance();
+		
 		List<Meeting> resultList = new ArrayList();
 		getFutureMeetings().stream()
 						   .filter(m -> m.getId() == id)
 						   .forEach(m -> resultList.add(m));
 
-		if(resultList.size() > 1) {
+		if(resultList.size() > 1 || resultList.get(0).getDate().before(now)) {
 			throw new IllegalStateException();
 		}
 		return (FutureMeeting) resultList.get(0);
@@ -123,6 +162,11 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
 		List<Meeting> result = new ArrayList();
+		
+		if(!contacts.contains(contact)) {
+			throw new IllegalArgumentException(); 
+		}
+		
 		for(Meeting m: getFutureMeetings()) {
 			for(Contact c: m.getContacts()) {
 				if(c.getId() == contact.getId()) {
@@ -149,6 +193,11 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
 		List<PastMeeting> result = new ArrayList();
+		
+		if(!contacts.contains(contact)) {
+			throw new IllegalArgumentException(); 
+		}
+		
 		for(Meeting m: getPastMeetings()) {
 			for(Contact c: m.getContacts()) {
 				if(c.getId() == contact.getId()) {
@@ -160,24 +209,49 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
-		Meeting addMeeting = new PastMeetingImpl(contacts, date, text);
+	public void addNewPastMeeting(Set<Contact> contact, Calendar date, String text) {
+		if(contact.size() == 0 || !contactsExist(contact)) {
+			throw new IllegalArgumentException();
+		}
+		if(contact == null || date == null || text == null) {
+			throw new NullPointerException();
+		}
+		Meeting addMeeting = new PastMeetingImpl(contact, date, text);
 		meetings.add(addMeeting);
 	}
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
+		if(!meetings.contains(getMeeting(id))) {
+			throw new IllegalArgumentException();
+		}
+		Calendar now = Calendar.getInstance();
+		if(getMeeting(id).getDate().after(now)) {
+			throw new IllegalStateException();
+		}
+		if(text == null) {
+			throw new NullPointerException();
+		}
 		PastMeetingImpl pm = (PastMeetingImpl) getPastMeeting(id);
 		pm.setNotes(text);
 	}
 
 	@Override
 	public void addNewContact(String name, String notes) {
+		if(name == null || notes == null) {
+			throw new NullPointerException();
+		}
 		contacts.add(new ContactImpl(name, notes));		
 	}
 
 	@Override
 	public Set<Contact> getContacts(int... ids) {
+		Set<Integer> allIDs = ids();
+		for(int i: ids) {
+			if(!allIDs.contains(i)) {
+				throw new IllegalArgumentException();
+			}
+		}
 		Set<Contact> result = new HashSet();
 		for (int i: ids) {
 			contacts.stream()
@@ -186,9 +260,25 @@ public class ContactManagerImpl implements ContactManager {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns all existing contact ID. 
+	 * 
+	 * @return set of ids.
+	 */
+	private Set<Integer> ids() {
+		Set<Integer> result = new HashSet();
+		for(Contact c: contacts) {
+			result.add(c.getId());
+		}
+		return result;
+	}
 
 	@Override
 	public Set<Contact> getContacts(String name) {
+		if(name == null) {
+			throw new NullPointerException();
+		}
 		Set<Contact> result = new HashSet();
 		contacts.stream()
 				.filter(c -> c.getName().equals(name))
@@ -198,8 +288,13 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void flush() {
-		// TODO Auto-generated method stub
-		
+		shutOffTimer();
+		try {
+			textBuilder.buildOutput(contacts, meetings);
+		} catch (IOException e) {
+			System.out.println("Saving was unsuccessful!");
+			e.printStackTrace();
+		}		
 	}
 	
 	/**
@@ -279,7 +374,7 @@ public class ContactManagerImpl implements ContactManager {
 		Meeting futureTemp;
 		while(meetings.get(i).getId() != m.getId() && i < meetings.size()) {
 			futureTemp = meetings.get(i);
-			pastTemp = new PastMeetingImpl(futureTemp.getContacts(), futureTemp.getDate(), futureTemp.getId());
+			pastTemp = new PastMeetingImpl(futureTemp.getId(), futureTemp.getContacts(), futureTemp.getDate());
 			meetings.set(i, pastTemp);
 			i++;
 		}

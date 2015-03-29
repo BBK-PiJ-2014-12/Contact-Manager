@@ -6,8 +6,8 @@ public class FutureMeetingImpl extends MeetingAbstract implements FutureMeeting{
 	public FutureMeetingImpl(Set<Contact> contacts, Calendar date) {
 		super(contacts, date);
 	}
-	public FutureMeetingImpl(Set<Contact> contacts, Calendar date, String notes) {
-		super(contacts, date, notes);
+	
+	public FutureMeetingImpl(int id, Set<Contact> contacts, Calendar date) {
+		super(id, contacts, date);
 	}
-
 }
