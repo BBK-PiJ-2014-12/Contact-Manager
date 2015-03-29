@@ -21,71 +21,20 @@ public class ContactManagerImpl implements ContactManager {
 	public ContactManagerImpl() {
 		contacts = new ArrayList();
 		meetings = new ArrayList();
-//		scheduler = new Scheduler(this);
-//		timer = new Timer();
-//		timer.schedule(scheduler, DELAY, PERIOD);
-//		textProcessor = new TextProcessor(this);
-//		textBuilder = new TextBuilder();
-//		
-//		try {
-//			textProcessor.recoverData();
-//		} catch (IOException e) {
-//			System.out.println("The application failed to recover data!");
-//			e.printStackTrace();
-//		}
-//		
-//		contacts = textProcessor.createContacts();
-//		for(Contact c: contacts) {
-//			System.out.println(">>> " + c.toString());
-//		}
-//		System.out.println("Contacts processed");
-//		meetings = textProcessor.createMeeting();
-//		System.out.println("Meetings processed");
+		scheduler = new Scheduler(this);
+		timer = new Timer();
+		timer.schedule(scheduler, DELAY, PERIOD);
+		textProcessor = new TextProcessor(this);
+		textBuilder = new TextBuilder();
 		
-		//Creating new Contacts
-		Contact Pete = new ContactImpl("Pete Jones", "Marketing manager");
-		Contact Tom = new ContactImpl("Tom Hanks", "Actor"); 
-		Contact Mary = new ContactImpl("Mary", "");
-		
-		contacts.add(Pete);
-		contacts.add(Tom);
-		contacts.add(Mary);
-		
-		//Creating new Meetings
-		Calendar pijDate;	//id = 1
-		Meeting pij;
-		Set<Contact> pijContacts = new HashSet<Contact>();
-		pijContacts.add(Pete);
-		pijContacts.add(Mary);
-		pijDate = Calendar.getInstance();
-		pijDate.set(2015, 5, 9, 10, 00);
-		pij = new FutureMeetingImpl(pijContacts, pijDate);
-
-		Calendar sdpDate;	//id = 2
-		Meeting sdp;
-		Set<Contact> sdpContacts = new HashSet<Contact>();
-		sdpContacts.add(Tom);
-		sdpContacts.add(Mary);
-		sdpDate = Calendar.getInstance();
-		sdpDate.set(2015, 4, 26, 14, 30);
-		sdp = new FutureMeetingImpl(sdpContacts, sdpDate);
-		
-		Calendar focDate;	//id = 3
-		Meeting foc;
-		Set<Contact> focContacts = new HashSet<Contact>();
-		focContacts.add(Tom);
-		focContacts.add(new ContactImpl("Mark", "examiner")	);
-		focDate = Calendar.getInstance();
-		focDate.set(2014, 4, 22, 11, 30);
-		foc = new PastMeetingImpl(focContacts, focDate, "FoC exam");
-		
-		meetings.add(pij);
-		meetings.add(sdp);
-		meetings.add(foc);
-
-		//Misc
-		SimpleDateFormat df;
-		df = new SimpleDateFormat("yyyy.MMMMM.dd HH:mm");
+		try {
+			textProcessor.recoverData();
+		} catch (IOException e) {
+			System.out.println("The application failed to recover data!");
+			e.printStackTrace();
+		}
+		contacts = textProcessor.createContacts();
+		meetings = textProcessor.createMeeting();		
 	}
 	
 	@Override

@@ -37,7 +37,6 @@ public class IOModule {
 				}
 			}
 			input.add(line);
-			System.out.println(line);
 		}
 		if (in != null) {in.close();}
 		return input;

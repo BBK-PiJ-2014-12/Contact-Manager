@@ -53,7 +53,6 @@ public class TextBuilder {
 		String line = "";
 		String participants = "";
 		for(Meeting m: meetings) {
-			System.out.println("Meeting id: " + m.getId() + " Year: " + m.getDate().get(Calendar.YEAR));
 
 			participants = participants(m.getContacts());
 			line = "" + m.getId() + "," + m.getDate().get(Calendar.YEAR) + "," 
@@ -65,7 +64,6 @@ public class TextBuilder {
 			if(m.getClass().getName().equals("PastMeetingImpl")) {
 				PastMeetingImpl pm = (PastMeetingImpl) m;
 				if(!pm.getNotes().equals("")) {
-					System.out.println("Notes: " + pm.getNotes());
 					line = line + "Notes:,";
 					line = line + pm.getNotes();
 				}
@@ -82,11 +80,9 @@ public class TextBuilder {
 	 */
 	public String participants(Set<Contact> participants) {
 		String result = "";
-		System.out.println("Number of participants: " + participants.size());
 		for(Contact c: participants) {
 			result = result + c.getId() + ",";
 		}
-		System.out.println("Participents: " + result);
 		return result;
 	}
 }

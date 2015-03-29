@@ -87,19 +87,15 @@ public class TextProcessor {
 			Calendar date = Calendar.getInstance();
 			lineM = str.split(",");
 			int id = getInt(lineM);
-			System.out.println("Meeting " + id);
 			int year = getInt(lineM);
 			int month = getInt(lineM);
 			int day = getInt(lineM);
 			int hour = getInt(lineM);
 			int minute = getInt(lineM);
-			System.out.println("Date: " + year + "/" +  month + "/" +  day + " " + hour + ":" + minute);
 			int i = 0;
-			System.out.println("Pos:" + position);
 			while(i < lineM.length - 6 && (!lineM[position + i].equals("Notes:"))) {
 				i++;
 			}
-			System.out.println("i = " + i);
 			int[] cons = new int[i];
 			
 			for(int j = 0; j < i; j++) {
@@ -123,7 +119,6 @@ public class TextProcessor {
 				meetings.add(new FutureMeetingImpl(id, contacts, date));
 			}
 			position = 0;
-			System.out.println("Meeting added");
 		}
 		return meetings;
 	}
